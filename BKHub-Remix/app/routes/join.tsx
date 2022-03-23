@@ -24,6 +24,7 @@ interface ActionData {
   errors: {
     email?: string;
     password?: string;
+    trustee?: string;
   };
 }
 
@@ -31,6 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+  const trustee = formData.get("trustee");
   const redirectTo = formData.get("redirectTo");
 
   if (!validateEmail(email)) {
@@ -47,6 +49,14 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
+  // validate trustee not equal to string
+  if (typeof trustee !== "string") {
+    return json<ActionData>(
+      { errors: { trustee: "Trustee is required" } },
+      { status: 400 }
+    );
+  }
+
   if (password.length < 8) {
     return json<ActionData>(
       { errors: { password: "Password is too short" } },
@@ -57,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return json<ActionData>(
-      { errors: { email: "A user already exists with this email" } },
+      { errors: { email: "A user already exists with this email, if password is unknown contact support@bkhub.com for assistance" } },
       { status: 400 }
     );
   }
@@ -84,17 +94,31 @@ export default function Join() {
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const trusteeRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {
       passwordRef.current?.focus();
+    } else if (actionData?.errors?.trustee) {
+      trusteeRef.current?.focus();
     }
   }, [actionData]);
 
   return (
     <div className="flex min-h-full flex-col justify-center">
+      <div className="pb-8">
+       <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
+                <span className="block uppercase text-yellow-500 drop-shadow-md">
+                  BK Hub
+                </span>
+              </h1>
+
+              <span className="block text-grey-500 text-center text-xl pt-8">Register for a BK Hub account</span>
+              <span className="block text-grey-500 text-center text-xl pt-8">This service is open to all Chapter 13 BK Staff and Trustees</span>
+              <span className="block text-grey-500 text-center text-xl pt-2">Provide Work Email and Trustee Name to be Approved</span>
+              </div>
       <div className="mx-auto w-full max-w-md px-8">
         <Form method="post" className="space-y-6">
           <div>
@@ -146,6 +170,31 @@ export default function Join() {
               {actionData?.errors?.password && (
                 <div className="pt-1 text-red-700" id="password-error">
                   {actionData.errors.password}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Input for Trustee Name */}
+          <div>
+            <label
+              htmlFor="trusteeName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Trustee Name
+            </label>
+            <div className="mt-1">
+              <input
+
+
+                id="trusteeName"
+                name="trusteeName"
+                type="text"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
+              {actionData?.errors?.trustee && (
+                <div className="pt-1 text-red-700" id="trustee-error">
+                  {actionData.errors.trustee}
                 </div>
               )}
             </div>
