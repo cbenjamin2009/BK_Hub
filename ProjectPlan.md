@@ -5,7 +5,7 @@ This section will provide a basic rundown plan of this project including Code Ba
 ### Code Base:
 Remix - Indie Stack
 Database: SQLLite DB for content
-Authentication: Firebase with Email and Password
+Authentication: Firebase with Email and Password or Local DB, undecided. 
 
 ### Components:
 Header Component - Logo Image
