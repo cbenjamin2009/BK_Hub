@@ -10,6 +10,7 @@ generator client {
 model User {
   id    String @id @default(cuid())
   email String @unique
+  trustee String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -36,3 +37,5 @@ model Note {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
+
+// worksheet model with id, title, body, javascript_code, template_code, images, user, and userID

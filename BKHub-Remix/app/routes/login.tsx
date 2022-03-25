@@ -94,6 +94,15 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-full flex-col justify-center">
+      <div className="pb-8">
+       <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
+                <span className="block uppercase text-yellow-500 drop-shadow-md">
+                  BK Hub
+                </span>
+              </h1>
+
+              <span className="block text-grey-500 text-center text-xl pt-8">Sign-in to your BK Hub account</span>
+              </div>
       <div className="mx-auto w-full max-w-md px-8">
         <Form method="post" className="space-y-6">
           <div>

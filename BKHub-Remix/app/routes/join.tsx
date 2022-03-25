@@ -72,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const user = await createUser(email, password);
+  const user = await createUser(email, password, trustee);
 
   return createUserSession({
     request,
@@ -178,7 +178,7 @@ export default function Join() {
           {/* Input for Trustee Name */}
           <div>
             <label
-              htmlFor="trusteeName"
+              htmlFor="trustee"
               className="block text-sm font-medium text-gray-700"
             >
               Trustee Name
@@ -187,8 +187,8 @@ export default function Join() {
               <input
 
 
-                id="trusteeName"
-                name="trusteeName"
+                id="trustee"
+                name="trustee"
                 type="text"
                 className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
               />
