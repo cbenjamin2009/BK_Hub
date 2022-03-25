@@ -26,6 +26,9 @@ export function getWorksheetListItems({ userId }: { userId: User["id"] }) {
 export function createWorksheet({
   body,
   title,
+  javascript_code,
+  template_code,
+  images,
   userId,
 }: Pick<Worksheet, "body" | "title"> & {
   userId: User["id"];

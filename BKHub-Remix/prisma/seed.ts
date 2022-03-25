@@ -42,6 +42,17 @@ async function seed() {
     },
   });
 
+  await prisma.worksheet.create({
+    data: {
+      title: "My first worksheet",
+      body: "Hello, Worksheet world!",
+      userId: user.id,
+      javascript_code: "console.log('Hello, world!');",
+      template_code: "Hello, world!",
+      images: "none",
+    },
+  })
+
   console.log(`Database has been seeded. 🌱`);
 }
 
