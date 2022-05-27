@@ -14,17 +14,21 @@ Call to Action COmponent: Three Div Box Grid Component with Heading Image and De
 Home Page Description Component
 
 ### Pages:
-Home page
-Login Page
-	Register Page
-	Forgot Password Page
-Logged in Landing Page (Hub)
-Worksheet Content Page - Contains markdown examples with screenshots of worksheets -> The initial page is done, need to format to ensure that code blocks will function correctly, and allow images to be uploaded and displayed. Also need to edit the database and add a description box. 
-KB Content Page - Contains markdown samples or PDFS of knowledgebase articles
-SQL Content Page - Contains helpful scripts, content for S
+- Home page
+- Login Page
+--	Register Page
+--	Forgot Password Page
+- Logged in Landing Page (Hub)
+- Worksheet Content Page - Contains markdown examples with screenshots of - Worksheets -> The initial page is done, need to format to ensure that code blocks will function correctly, and allow images to be uploaded and displayed. Also need to edit the database and add a description box. 
+- KB Content Page - Contains markdown samples or PDFS of knowledgebase articles
+- SQL Content Page - Contains helpful scripts, content for S
 
 1. Worksheet Examples and Code Snippets
 2. SQL Server Maintenance and Scripts
 3. Crystal Reports
 4. Documentation
 5. Policies and Procedures 
+
+### Project 5/27/2022
+Picking back up on this project. 
+Running NPM Update breaks this project due to remix dependencies 
