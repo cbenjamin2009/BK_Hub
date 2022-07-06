@@ -32,3 +32,9 @@ Home Page Description Component
 ### Project 5/27/2022
 Picking back up on this project. 
 Running NPM Update breaks this project due to remix dependencies 
+
+Work done 5/27/2022
+Created Components Folder
+Created 2 components to create consistency without retyping these components each time. 
+1. The title header for each page - PageHeaderComponent
+2. The Home and Logout Button for each page - PageHeaderButtonComponent. The home button allows the user to switch between Notes and Worksheets pages. 

@@ -4,6 +4,7 @@ import type { LoaderFunction } from "remix";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 import { getNoteListItems } from "~/models/note.server";
+import PageHeaderComponent from "~/components/PageHeaderComponent";
 
 type LoaderData = {
   noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
@@ -22,9 +23,7 @@ export default function NotesPage() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
-        </h1>
+      <PageHeaderComponent pageName="Notes"/>
         <p>User: {user.email}</p>
         <p>Trustee: {user.trustee}</p>
         <Form action="/logout" method="post">
