@@ -4,7 +4,7 @@ import { json, useLoaderData, useCatch, Form } from "remix";
 import invariant from "tiny-invariant";
 import type { Worksheet } from "~/models/worksheet.server";
 import { deleteWorksheet } from "~/models/worksheet.server";
-import { getMyWorksheet } from "~/models/worksheet.server";
+import { getWorksheet } from "~/models/worksheet.server";
 import { requireUserId } from "~/session.server";
 
 type LoaderData = {
@@ -15,19 +15,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const userId = await requireUserId(request);
     invariant(params.worksheetId, "worksheetId not found");
 
-    const worksheet = await getMyWorksheet({ userId, id: params.worksheetId });
+    const worksheet = await getWorksheet({ id: params.worksheetId });
     if (!worksheet) {
         return redirect("/");
     }
     return json<LoaderData>({ worksheet })
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
-    const userId = await requireUserId(request);
-    invariant(params.worksheetId, "worksheetId not found");
-
-    await deleteWorksheet({ userId, id: params.worksheetId });
-    return redirect("/worksheets");
+export const action: ActionFunction = () => {
+   
+    return redirect("/community");
 }
 
 export default function WorksheetDetailsPage() {
@@ -44,9 +41,9 @@ export default function WorksheetDetailsPage() {
             <Form method="post">
                 <button
                     type="submit"
-                    className="rounded bg-red-500  py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+                    className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
                 >
-                    ✖ Delete
+                    Back
                 </button>
             </Form>
         </div>

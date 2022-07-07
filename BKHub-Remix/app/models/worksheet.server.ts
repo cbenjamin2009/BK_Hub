@@ -4,7 +4,7 @@ import { prisma } from "~/db.server";
 
 export type { Worksheet } from "@prisma/client";
 
-export function getWorksheet({
+export function getMyWorksheet({
   id,
   userId,
 }: Pick<Worksheet, "id"> & {
@@ -15,9 +15,26 @@ export function getWorksheet({
   });
 }
 
-export function getWorksheetListItems({ userId }: { userId: User["id"] }) {
+//getWorksheet no userId needed
+export function getWorksheet({
+  id,
+}: Pick<Worksheet, "id">) {
+  return prisma.worksheet.findFirst({
+    where: { id },
+  });
+}
+
+export function getWorksheetListItems({ userId }: { userId: User["id"] } ) {
   return prisma.worksheet.findMany({
     where: { userId },
+    select: { id: true, title: true }, 
+    orderBy: { updatedAt: "desc" },
+  });
+}
+
+// get all WorksheetListItems
+export function getWorksheetListItemsAll() {
+  return prisma.worksheet.findMany({
     select: { id: true, title: true },
     orderBy: { updatedAt: "desc" },
   });
