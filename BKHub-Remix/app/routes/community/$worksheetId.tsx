@@ -1,3 +1,4 @@
+import { WorksheetType } from "@prisma/client";
 import type { LoaderFunction, ActionFunction } from "remix";
 import { redirect } from "remix";
 import { json, useLoaderData, useCatch, Form } from "remix";
@@ -5,10 +6,13 @@ import invariant from "tiny-invariant";
 import type { Worksheet } from "~/models/worksheet.server";
 import { deleteWorksheet } from "~/models/worksheet.server";
 import { getWorksheet } from "~/models/worksheet.server";
+import { getWorksheetType } from "~/models/worksheettype.server";
 import { requireUserId } from "~/session.server";
 
 type LoaderData = {
-    worksheet: Worksheet;
+    worksheet: Worksheet,
+    worksheetType: WorksheetType;
+
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -19,7 +23,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     if (!worksheet) {
         return redirect("/");
     }
-    return json<LoaderData>({ worksheet })
+
+    const worksheetType = await getWorksheetType({ id: worksheet.worksheetTypeId });
+
+    return json<LoaderData>({ worksheet, worksheetType });
 };
 
 export const action: ActionFunction = () => {
@@ -33,6 +40,8 @@ export default function WorksheetDetailsPage() {
     return (
         <div>
             <h3 className="text-2xl font-bold">Worksheet Title: {data.worksheet.title}</h3>
+            <h3 className="text-large font-bold py-6">Worksheet Type:</h3>
+            <p className="py-6">Worksheet Type: {data.worksheetType.name}</p>
             <h3 className="text-large font-bold py-6">Body Content:</h3>
             <p className="border-2 border-blue-500 p-4 m-auto w-90">{data.worksheet.body}</p>
             <h3 className="text-large font-bold py-6">Javascript Code:</h3>

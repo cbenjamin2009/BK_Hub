@@ -12,6 +12,14 @@ export function getAllWorksheetTypes() {
   return prisma.worksheetType.findMany();
 }
 
+// get worksheet type by id
+export function getWorksheetType({ id }: Pick<WorksheetType, "id">) {
+    return prisma.worksheetType.findFirst({
+        where: { id },
+    });
+}
+
+
 // createWorksheetType with id and name 
 export function createWorksheetType({
     name,

@@ -13,7 +13,7 @@ type ActionData = {
         javascript_code?: string;
         template_code?: string;
         images?: string;
-        worksheet_type?: string;
+        worksheetTypeId?: string;
     };
 }
 
@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
     const javascript_code = formData.get("javascript_code");
     const template_code = formData.get("template_code");
     const images = formData.get("images");
-    const worksheet_type = formData.get("worksheet_type");
+    const worksheetTypeId = formData.get("worksheetTypeId");
 
     if (typeof title !== "string" || title.length === 0) {
         return json<ActionData>(
@@ -75,14 +75,14 @@ export const action: ActionFunction = async ({ request }) => {
         );
     }
 
-    if (typeof worksheet_type !== "string" || worksheet_type.length === 0) {
+    if (typeof worksheetTypeId !== "string" || worksheetTypeId.length === 0) {
         return json<ActionData>(
-            { errors: { worksheet_type: "Worksheet type is required" } },
+            { errors: { worksheetTypeId: "Worksheet type is required" } },
             { status: 400 }
         );
     }
     
-    const worksheet = await createWorksheet({ title, body, javascript_code, template_code, images, userId, worksheet_type });
+    const worksheet = await createWorksheet({ title, body, javascript_code, template_code, images, userId, worksheetTypeId });
 
     return redirect(`/worksheets/${worksheet.id}`);
 
@@ -143,16 +143,16 @@ export default function NewWorksheetPage() {
 
                {/* Worksheet Type - Need to set as lookup from DB for Worksheet Types in system */}
                <div>
-                <label htmlFor="worksheet_type">
+                <label htmlFor="worksheetTypeId">
                     <span>Worksheet Type: </span>
                     <select
 
                         ref={worksheetTypeRef}
-                        name="worksheet_type"
+                        name="worksheetTypeId"
                         className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-                        aria-invalid={actionData?.errors?.worksheetType ? true : undefined}
+                        aria-invalid={actionData?.errors?.worksheetTypeId ? true : undefined}
                         aria-errormessage={
-                            actionData?.errors?.worksheetType ? "worksheetType-error" : undefined
+                            actionData?.errors?.worksheetTypeId ? "worksheetType-error" : undefined
                         }
                     >   {/* Need to set as lookup from DB for Worksheet Types in system */}
                         <option value="">Select Worksheet Type</option>
@@ -164,9 +164,9 @@ export default function NewWorksheetPage() {
                         </select> 
                    
                 </label>
-                {actionData?.errors?.worksheetType && (
-                    <div className="pt-1 text-red-700" id="worksheet_type=error">
-                        {actionData.errors.worksheetType}
+                {actionData?.errors?.worksheetTypeId && (
+                    <div className="pt-1 text-red-700" id="worksheetTypeId=error">
+                        {actionData.errors.worksheetTypeId}
                         </div>
                 )}
                </div>

@@ -46,8 +46,8 @@ export function createWorksheet({
   template_code,
   images,
   userId,
-  worksheet_type,
-}: Pick<Worksheet, "body" | "title" | "javascript_code" | "template_code" | "images" | "worksheet_type"> & {
+  worksheetTypeId,
+}: Pick<Worksheet, "body" | "title" | "javascript_code" | "template_code" | "images" | "worksheetTypeId"> & {
   userId: User["id"];
 }) {
   return prisma.worksheet.create({
@@ -62,8 +62,12 @@ export function createWorksheet({
       javascript_code,
       template_code,
       images,
-      worksheet_type,
+      worksheet_type: {
+        connect: {
+          id: worksheetTypeId,
+        },
     },
+    }
   });
 }
 
