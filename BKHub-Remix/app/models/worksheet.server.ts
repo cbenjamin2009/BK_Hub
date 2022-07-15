@@ -32,7 +32,6 @@ export function getWorksheetListItems({ userId }: { userId: User["id"] } ) {
   });
 }
 
-// get all WorksheetListItems
 export function getWorksheetListItemsAll() {
   return prisma.worksheet.findMany({
     select: { id: true, title: true },
@@ -47,7 +46,8 @@ export function createWorksheet({
   template_code,
   images,
   userId,
-}: Pick<Worksheet, "body" | "title"> & {
+  worksheet_type,
+}: Pick<Worksheet, "body" | "title" | "javascript_code" | "template_code" | "images" | "worksheet_type"> & {
   userId: User["id"];
 }) {
   return prisma.worksheet.create({
@@ -62,6 +62,7 @@ export function createWorksheet({
       javascript_code,
       template_code,
       images,
+      worksheet_type,
     },
   });
 }

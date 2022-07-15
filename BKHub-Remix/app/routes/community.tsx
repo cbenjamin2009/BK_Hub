@@ -6,6 +6,7 @@ import { useUser } from "~/utils";
 import { getWorksheetListItems } from "~/models/worksheet.server";
 import PageHeaderComponent from "~/components/PageHeaderComponent";
 import PageHeaderButtonComponent from "~/components/PageHeaderButtonComponent";
+import PageHeaderAdminButton from "~/components/PageHeaderAdminButton";
 
 type LoaderData = {
 }
@@ -27,6 +28,7 @@ export default function WorksheetsPage(){
                 <PageHeaderComponent pageName="Community"/>
                 <p>User: {user.email}</p>
                 <p>Trustee: {user.trustee}</p>
+                <PageHeaderAdminButton />
                 <PageHeaderButtonComponent />
             </header>
             <Outlet />

@@ -60,6 +60,6 @@ model Worksheet {
 
 model WorksheetType {
   id        String      @id @default(cuid())
-  name      String
+  name      String      @unique
   Worksheet Worksheet[]
 }

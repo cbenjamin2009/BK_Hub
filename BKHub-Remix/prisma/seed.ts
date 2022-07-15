@@ -50,6 +50,7 @@ async function seed() {
       javascript_code: "console.log('Hello, world!');",
       template_code: "Hello, world!",
       images: "none",
+      worksheetTypeId: "1",
     },
   })
 
@@ -60,7 +61,7 @@ seed()
   .catch((e) => {
     console.error(e);
     process.exit(1);
-  })
+  })yield
   .finally(async () => {
     await prisma.$disconnect();
   });

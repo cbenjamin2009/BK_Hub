@@ -26,24 +26,24 @@ export default function Index() {
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
                 A place to share your knowledge and ideas for members of the Chapter 13 Bankruptcy Community
               </p>
-              <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+              <div className="mx-auto mt-10 max-w-sm sm:flex space-x-4 sm:max-w-none sm:justify-center">
                 {user ? (
                   <>
                   <Link
                     to="/notes"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-2 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-2 sm:py-2"
                   >
-                    View Notes for {user.email}
+                    View My Notes
                   </Link>
                    <Link
                     to="/worksheets"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-2 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-2 sm:py-2"
                   >
-                    View Worksheets for {user.email}
+                    View My Worksheets
                   </Link>
                   {/*link to commmunity page */}
                   <Link to="/community"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-2 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-2 sm:py-2"
                   >
                     View Community
                   </Link>

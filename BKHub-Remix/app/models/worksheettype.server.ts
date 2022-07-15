@@ -2,13 +2,23 @@
 // Language: typescript
 // import prisma 
 
+import type { WorksheetType } from "@prisma/client";
+
 import { prisma } from "~/db.server";
 
 export type { WorksheetType } from "@prisma/client";
 
- export function getWorksheetType({ id }: { id: string }) {
-    return prisma.WorksheetType.findOne({
-        where: { id },
-    });
+export function getAllWorksheetTypes() {
+  return prisma.worksheetType.findMany();
 }
 
+// createWorksheetType with id and name 
+export function createWorksheetType({
+    name,
+}: Pick<WorksheetType, "name">) {
+    return prisma.worksheetType.create({
+        data: {
+            name,
+        },
+    });
+}

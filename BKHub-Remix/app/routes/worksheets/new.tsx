@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Form, json, redirect, useActionData } from "remix";
+import { Form, json, LoaderFunction, redirect, useActionData, useLoaderData } from "remix";
 import type { ActionFunction } from "remix";
 
 import { createWorksheet } from "~/models/worksheet.server";
 import { requireUserId } from "~/session.server";
-import { getWorksheetType } from "~/models/worksheettype.server";
+import { getAllWorksheetTypes } from "~/models/worksheettype.server";
 
 type ActionData = {
     errors?: {
@@ -12,21 +12,22 @@ type ActionData = {
         body?: string;
         javascript_code?: string;
         template_code?: string;
-        image?: string;
+        images?: string;
         worksheet_type?: string;
     };
 }
 
-// worksheetType type 
-// type WorksheetType = {}
- 
+type LoaderData = {
+    worksheetTypeListItems: Awaited<ReturnType<typeof getAllWorksheetTypes>>;
+}
 
-// loader function to get worksheet type from prisma
-// needs to pull valid worksheetTypes 
-// export const loader: ActionFunction = async ({  }) => {
-//     const worksheetType = await getWorksheetType();
-//     return json<ActionData>({ worksheetType });
-// }
+// loader function getWorksheetType
+ export const loader: LoaderFunction = async () => {
+     const worksheetTypeListItems = await getAllWorksheetTypes();
+     return json<LoaderData>({ worksheetTypeListItems });
+ }
+
+
 
 export const action: ActionFunction = async ({ request }) => {
     const userId = await requireUserId(request);
@@ -67,6 +68,20 @@ export const action: ActionFunction = async ({ request }) => {
         );
     }
 
+    if (typeof images !== "string" || images.length === 0) {
+        return json<ActionData>(
+            { errors: { images: "Images is required" } },
+            { status: 400 }
+        );
+    }
+
+    if (typeof worksheet_type !== "string" || worksheet_type.length === 0) {
+        return json<ActionData>(
+            { errors: { worksheet_type: "Worksheet type is required" } },
+            { status: 400 }
+        );
+    }
+    
     const worksheet = await createWorksheet({ title, body, javascript_code, template_code, images, userId, worksheet_type });
 
     return redirect(`/worksheets/${worksheet.id}`);
@@ -74,12 +89,14 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function NewWorksheetPage() {
+    const data = useLoaderData() as LoaderData;
     const actionData = useActionData() as ActionData;
     const titleRef = React.useRef<HTMLInputElement>(null);
     const bodyRef = React.useRef<HTMLTextAreaElement>(null);
     const javascript_codeRef = React.useRef<HTMLTextAreaElement>(null);
     const template_codeRef = React.useRef<HTMLTextAreaElement>(null);
     const imagesRef = React.useRef<HTMLTextAreaElement>(null);
+    const worksheetTypeRef = React.useRef<HTMLSelectElement>(null);
 
     React.useEffect(() => {
         if (actionData?.errors?.title) {
@@ -94,6 +111,7 @@ export default function NewWorksheetPage() {
     }, [actionData]);
 
     return (
+
         <Form
             method="post"
             style={{
@@ -127,19 +145,28 @@ export default function NewWorksheetPage() {
                <div>
                 <label htmlFor="worksheet_type">
                     <span>Worksheet Type: </span>
-                    <input
-                        ref={titleRef}
+                    <select
+
+                        ref={worksheetTypeRef}
                         name="worksheet_type"
                         className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-                        aria-invalid={actionData?.errors?.worksheet_type ? true : undefined}
+                        aria-invalid={actionData?.errors?.worksheetType ? true : undefined}
                         aria-errormessage={
-                            actionData?.errors?.worksheet_type ? "worksheet_type-error" : undefined
+                            actionData?.errors?.worksheetType ? "worksheetType-error" : undefined
                         }
-                    />
+                    >   {/* Need to set as lookup from DB for Worksheet Types in system */}
+                        <option value="">Select Worksheet Type</option>
+                        {data.worksheetTypeListItems.map(worksheetType => (
+                            <option key={worksheetType.id} value={worksheetType.id}>
+                                {worksheetType.name}
+                            </option>
+                        ))}
+                        </select> 
+                   
                 </label>
-                {actionData?.errors?.worksheet_type && (
+                {actionData?.errors?.worksheetType && (
                     <div className="pt-1 text-red-700" id="worksheet_type=error">
-                        {actionData.errors.worksheet_type}
+                        {actionData.errors.worksheetType}
                         </div>
                 )}
                </div>
