@@ -5,6 +5,7 @@ import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 import { getNoteListItems } from "~/models/note.server";
 import PageHeaderComponent from "~/components/PageHeaderComponent";
+import PageHeaderButtonComponent from "~/components/PageHeaderButtonComponent";
 
 type LoaderData = {
   noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
@@ -26,14 +27,8 @@ export default function NotesPage() {
       <PageHeaderComponent pageName="Notes"/>
         <p>User: {user.email}</p>
         <p>Trustee: {user.trustee}</p>
-        <Form action="/logout" method="post">
-          <button
-            type="submit"
-            className="rounded bg-slate-400 py-2 px-4 text-blue-200 hover:bg-blue-500 active:bg-blue-600"
-          >
-            Logout
-          </button>
-        </Form>
+        <PageHeaderButtonComponent />
+
       </header>
 
       <main className="flex h-full bg-white">

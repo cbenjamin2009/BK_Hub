@@ -4,6 +4,7 @@ import type { ActionFunction } from "remix";
 
 import { createWorksheet } from "~/models/worksheet.server";
 import { requireUserId } from "~/session.server";
+import { getWorksheetType } from "~/models/worksheettype.server";
 
 type ActionData = {
     errors?: {
@@ -12,8 +13,20 @@ type ActionData = {
         javascript_code?: string;
         template_code?: string;
         image?: string;
+        worksheet_type?: string;
     };
 }
+
+// worksheetType type 
+// type WorksheetType = {}
+ 
+
+// loader function to get worksheet type from prisma
+// needs to pull valid worksheetTypes 
+// export const loader: ActionFunction = async ({  }) => {
+//     const worksheetType = await getWorksheetType();
+//     return json<ActionData>({ worksheetType });
+// }
 
 export const action: ActionFunction = async ({ request }) => {
     const userId = await requireUserId(request);
@@ -24,6 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
     const javascript_code = formData.get("javascript_code");
     const template_code = formData.get("template_code");
     const images = formData.get("images");
+    const worksheet_type = formData.get("worksheet_type");
 
     if (typeof title !== "string" || title.length === 0) {
         return json<ActionData>(
@@ -53,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
         );
     }
 
-    const worksheet = await createWorksheet({ title, body, javascript_code, template_code, images, userId });
+    const worksheet = await createWorksheet({ title, body, javascript_code, template_code, images, userId, worksheet_type });
 
     return redirect(`/worksheets/${worksheet.id}`);
 
@@ -107,6 +121,27 @@ export default function NewWorksheetPage() {
                      {actionData.errors.title}
                    </div>
                  )}
+               </div>
+
+               {/* Worksheet Type - Need to set as lookup from DB for Worksheet Types in system */}
+               <div>
+                <label htmlFor="worksheet_type">
+                    <span>Worksheet Type: </span>
+                    <input
+                        ref={titleRef}
+                        name="worksheet_type"
+                        className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+                        aria-invalid={actionData?.errors?.worksheet_type ? true : undefined}
+                        aria-errormessage={
+                            actionData?.errors?.worksheet_type ? "worksheet_type-error" : undefined
+                        }
+                    />
+                </label>
+                {actionData?.errors?.worksheet_type && (
+                    <div className="pt-1 text-red-700" id="worksheet_type=error">
+                        {actionData.errors.worksheet_type}
+                        </div>
+                )}
                </div>
 
                 <div>
